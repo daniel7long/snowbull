@@ -1,0 +1,66 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: SnowBall+ market-data API (quotes, history, news, Treasury yields, optional OpenAI explainer)
+
+Parameters:
+  SiteOrigin:
+    Type: String
+    Description: Exact origin of the website, e.g. https://d1234abcd.cloudfront.net (no trailing slash). Only this origin may call the API from a browser.
+  FinnhubKey:
+    Type: String
+    NoEcho: true
+    Default: ''
+  TwelveKey:
+    Type: String
+    NoEcho: true
+    Default: ''
+  FredKey:
+    Type: String
+    NoEcho: true
+    Default: ''
+  OpenAiKey:
+    Type: String
+    NoEcho: true
+    Default: ''
+  OpenAiModel:
+    Type: String
+    Default: gpt-4o-mini
+
+Resources:
+  Api:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      DefaultRouteSettings:
+        ThrottlingBurstLimit: 20     # protects your provider quotas and OpenAI bill
+        ThrottlingRateLimit: 10
+
+  DataFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: .
+      Handler: index.handler
+      Runtime: nodejs20.x
+      Architectures: [arm64]
+      MemorySize: 256
+      Timeout: 25
+      ReservedConcurrentExecutions: 5   # few warm containers = better cache hit rate and a hard cost ceiling
+      Environment:
+        Variables:
+          ALLOW_ORIGIN: !Ref SiteOrigin
+          FINNHUB_KEY: !Ref FinnhubKey
+          TWELVE_KEY: !Ref TwelveKey
+          FRED_KEY: !Ref FredKey
+          OPENAI_API_KEY: !Ref OpenAiKey
+          OPENAI_MODEL: !Ref OpenAiModel
+      Events:
+        AnyApi:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref Api
+            Path: '/api/{proxy+}'
+            Method: ANY
+
+Outputs:
+  ApiUrl:
+    Description: Put this in js/config.js as apiBase and in the CloudFront CSP connect-src
+    Value: !Sub https://${Api}.execute-api.${AWS::Region}.${AWS::URLSuffix}

@@ -1,0 +1,74 @@
+/* SnowBull chat component — shared by the standalone app and the SnowBall+ embed.
+ * Only .sbl-* rules live here; colours come from the SnowBall+ design tokens (sky blue + amber),
+ * with fallbacks so the file also works on its own. WCAG 2.2 AA contrast, 44px targets, visible focus. */
+.sbl, .sbl-launch, .sbl-dock {
+  --sbl-sky: var(--sky, #87CEEB); --sbl-sky-100: var(--sky-100, #E8F6FC); --sbl-sky-200: var(--sky-200, #C5E8F7);
+  --sbl-navy: var(--navy, #0B2A3C); --sbl-ink: var(--ink, #14232E); --sbl-muted: var(--muted, #41576A);
+  --sbl-link: var(--link, #0B5C8A); --sbl-amber: var(--amber, #FFB347); --sbl-amber-ink: var(--amber-ink, #8A4200);
+  --sbl-loss: var(--loss, #B3261E); --sbl-gain: var(--gain, #0A6B3B); --sbl-field: var(--field, #6B8396); --sbl-hair: var(--hair, #C9D8E3);
+}
+.sbl { display: flex; flex-direction: column; background: #fff; border: 2px solid var(--sbl-navy); border-radius: 1rem; overflow: hidden; color: var(--sbl-ink); min-height: 28rem; }
+.sbl-head { display: flex; align-items: center; gap: .75rem; padding: .75rem 1rem; background: var(--sbl-sky); border-bottom: 3px solid var(--sbl-navy); color: var(--sbl-navy); }
+.sbl-head h2, .sbl-head h3 { margin: 0; font-size: 1.15rem; color: var(--sbl-navy); }
+.sbl-mark { width: 2.4rem; height: 2.4rem; flex: none; border-radius: 50%; background: #fff; border: 2px solid var(--sbl-navy); display: grid; place-items: center; }
+.sbl-ai { background: var(--sbl-amber); color: var(--sbl-navy); border-radius: .35rem; padding: 0 .3rem; margin-left: .2rem; font-weight: 800; }
+.sbl-status { margin-left: auto; font-size: .85rem; font-weight: 600; display: inline-flex; align-items: center; gap: .4rem; white-space: nowrap; }
+.sbl-dot { width: .6rem; height: .6rem; border-radius: 50%; background: var(--sbl-gain); border: 1px solid var(--sbl-navy); }
+.sbl-dot.off { background: var(--sbl-amber); }
+.sbl-log { flex: 1 1 auto; overflow-y: auto; padding: 1rem; display: flex; flex-direction: column; gap: 1rem; background: var(--bg, #F4FAFD); min-height: 14rem; max-height: 34rem; scroll-behavior: auto; }
+.sbl-msg { max-width: 92%; display: flex; flex-direction: column; gap: .5rem; }
+.sbl-msg.user { align-self: flex-end; }
+.sbl-bubble { padding: .7rem .95rem; border-radius: 1rem; border: 1px solid var(--sbl-hair); background: #fff; line-height: 1.55; overflow-wrap: anywhere; }
+.sbl-msg.user .sbl-bubble { background: var(--sbl-navy); color: #fff; border-color: var(--sbl-navy); border-bottom-right-radius: .25rem; }
+.sbl-msg.bot .sbl-bubble { border-bottom-left-radius: .25rem; }
+.sbl-bubble p { margin: 0 0 .5rem; } .sbl-bubble p:last-child, .sbl-bubble ul:last-child { margin-bottom: 0; }
+.sbl-bubble ul { margin: 0 0 .5rem; padding-left: 1.2rem; }
+.sbl-cite { color: var(--sbl-link); font-weight: 700; text-decoration: none; }
+.sbl-who { font-size: .8rem; color: var(--sbl-muted); font-weight: 600; margin: 0 .25rem; }
+.sbl-typing { color: var(--sbl-muted); font-style: italic; }
+
+/* risk alerts: icon + word + border so colour is never the only cue */
+.sbl-risks { display: flex; flex-direction: column; gap: .5rem; }
+.sbl-risk { border: 2px solid var(--sbl-link); border-left-width: 8px; border-radius: .6rem; padding: .6rem .85rem; background: var(--sbl-sky-100); }
+.sbl-risk.high { border-color: var(--sbl-loss); background: #FDECEA; }
+.sbl-risk.medium { border-color: var(--sbl-amber-ink); background: #FFF3DC; }
+.sbl-risk-t { display: flex; align-items: center; gap: .5rem; margin: 0 0 .25rem; font-weight: 800; color: var(--sbl-navy); }
+.sbl-lvl { font-size: .75rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; padding: .05rem .5rem; border-radius: 1rem; background: #fff; border: 1px solid currentColor; flex: none; }
+.sbl-risk.high .sbl-lvl { color: #7F1D1D; } .sbl-risk.medium .sbl-lvl { color: #6B3200; } .sbl-risk.low .sbl-lvl { color: #0B3F5E; }
+.sbl-risk p { margin: .15rem 0 0; font-size: .95rem; }
+.sbl-risk .sbl-do { font-weight: 600; }
+
+.sbl-sources { margin: 0; padding: 0; list-style: none; font-size: .88rem; color: var(--sbl-muted); }
+.sbl-sources li { margin: .1rem 0; }
+.sbl-sources a { color: var(--sbl-link); }
+.sbl-meta { display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; font-size: .82rem; color: var(--sbl-muted); }
+.sbl-pill { display: inline-block; padding: .05rem .55rem; border: 1px solid var(--sbl-link); border-radius: 1rem; background: var(--sbl-sky-100); color: #0B3F5E; font-weight: 700; font-size: .78rem; }
+.sbl-pill.live { background: #E6F4EA; color: #0A4D2B; border-color: var(--sbl-gain); }
+.sbl-disc { font-size: .8rem; color: var(--sbl-muted); margin: 0; }
+
+.sbl-chips { display: flex; flex-wrap: wrap; gap: .4rem; }
+.sbl-chip { min-height: 2.75rem; padding: .35rem .85rem; border: 2px solid var(--sbl-link); border-radius: 1.5rem; background: #fff; color: var(--sbl-navy); font: inherit; font-weight: 600; font-size: .92rem; cursor: pointer; text-align: left; }
+.sbl-chip:hover { background: var(--sbl-sky-100); }
+.sbl-foot { border-top: 2px solid var(--sbl-hair); padding: .75rem 1rem 1rem; background: #fff; display: flex; flex-direction: column; gap: .6rem; }
+.sbl-form { display: flex; gap: .5rem; align-items: flex-end; }
+.sbl-form textarea { flex: 1 1 auto; min-height: 2.75rem; max-height: 9rem; resize: vertical; padding: .55rem .75rem; border: 2px solid var(--sbl-field); border-radius: .6rem; font: inherit; color: var(--sbl-ink); background: #fff; }
+.sbl-send { min-height: 2.75rem; padding: .45rem 1.1rem; border: 2px solid var(--sbl-amber-ink); border-radius: .6rem; background: var(--sbl-amber); color: var(--sbl-navy); font: inherit; font-weight: 800; cursor: pointer; white-space: nowrap; }
+.sbl-send:hover { background: #FFA11F; } .sbl-send:disabled { opacity: .6; cursor: not-allowed; }
+.sbl-clear { background: none; border: 0; color: var(--sbl-link); text-decoration: underline; cursor: pointer; font: inherit; font-size: .88rem; min-height: 2.75rem; padding: 0 .5rem; }
+.sbl button:focus-visible, .sbl textarea:focus-visible, .sbl a:focus-visible, .sbl-launch:focus-visible, .sbl-dock button:focus-visible { outline: 3px solid var(--sbl-navy); outline-offset: 2px; box-shadow: 0 0 0 2px #fff; }
+
+/* floating launcher + dock (SnowBall+ embed) */
+.sbl-launch { position: fixed; right: 1rem; bottom: 1rem; z-index: 55; display: inline-flex; align-items: center; gap: .55rem; min-height: 3.25rem; padding: .5rem 1.1rem .5rem .6rem; border: 3px solid var(--sbl-navy); border-radius: 2rem; background: var(--sbl-amber); color: var(--sbl-navy); font: inherit; font-weight: 800; cursor: pointer; box-shadow: 0 8px 20px rgba(11, 42, 60, .3); }
+.sbl-launch:hover { background: #FFA11F; }
+.sbl-launch .sbl-mark { width: 2.2rem; height: 2.2rem; border-width: 2px; }
+.sbl-dock { position: fixed; right: 1rem; bottom: 5.25rem; z-index: 56; width: min(26rem, calc(100vw - 2rem)); box-shadow: 0 16px 40px rgba(11, 42, 60, .35); border-radius: 1rem; }
+.sbl-dock .sbl { max-height: calc(100vh - 7rem); }
+.sbl-dock .sbl-log { max-height: calc(100vh - 25rem); min-height: 10rem; }
+.sbl-x { margin-left: .25rem; min-width: 2.75rem; min-height: 2.75rem; border: 2px solid var(--sbl-navy); border-radius: .5rem; background: #fff; color: var(--sbl-navy); font-size: 1.1rem; font-weight: 800; cursor: pointer; }
+.sbl-x:hover { background: var(--sbl-sky-100); }
+@media (max-width: 600px) { .sbl-dock { right: .5rem; left: .5rem; width: auto; bottom: 4.75rem; } .sbl-launch .sbl-label { display: none; } .sbl-launch { padding: .5rem; } .sbl-msg { max-width: 100%; } }
+@media (prefers-reduced-motion: reduce) { .sbl * { animation: none !important; transition: none !important; } }
+@media (forced-colors: active) { .sbl, .sbl-risk, .sbl-chip, .sbl-send, .sbl-launch { border: 2px solid ButtonText; } }
+@media print { .sbl-launch, .sbl-dock { display: none; } }
+
+.sbl-sr { position: absolute !important; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }

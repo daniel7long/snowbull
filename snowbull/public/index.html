@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SnowBull AI — Investing assistant with sources and scam alerts</title>
+  <meta name="description" content="SnowBull is a retrieval-augmented investing assistant: sourced answers, live market data, and automatic scam and trading-risk alerts.">
+  <meta name="theme-color" content="#87CEEB">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%2387CEEB' stroke='%230B2A3C' stroke-width='2'/%3E%3Cpath d='M16 7v18M7 16h18M9.6 9.6l12.8 12.8M22.4 9.6L9.6 22.4' stroke='%230B2A3C' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="base.css?v=1.0.0">
+  <link rel="stylesheet" href="snowbull.css?v=1.0.0">
+</head>
+<body>
+  <a class="skip" href="#main-content">Skip to main content</a>
+  <div class="banner" role="note">SnowBull gives educational information, not personalised investment advice. Investing involves risk, including loss of principal.</div>
+  <header class="site-header">
+    <div class="container bar">
+      <a class="brand" href="./" aria-label="SnowBull home">
+        <svg viewBox="0 0 32 32" width="34" height="34" aria-hidden="true" focusable="false"><circle cx="16" cy="16" r="14" fill="#FFFFFF" stroke="#0B2A3C" stroke-width="2"/><path d="M16 7v18M7 16h18M9.6 9.6l12.8 12.8M22.4 9.6L9.6 22.4" stroke="#0B2A3C" stroke-width="2" stroke-linecap="round"/></svg>
+        <span>SnowBull<span class="plus">AI</span></span>
+      </a>
+      <a class="btn spacer" id="to-snowball" href="https://snowball.example.com" rel="noopener" hidden>Open SnowBall+</a>
+    </div>
+    <nav id="primary-nav" aria-label="Primary"><div class="container"><ul><li><a href="./" aria-current="page">Ask SnowBull</a></li><li><a href="#how">How it works</a></li><li><a href="#privacy">Privacy &amp; limits</a></li></ul></div></nav>
+  </header>
+
+  <main id="main-content" tabindex="-1" class="container">
+    <div class="hero">
+      <h1>Your investing assistant, with receipts</h1>
+      <p class="lead">Ask about stocks, funds, bonds or your plan. SnowBull answers from a vetted library plus live market data, shows its sources, and flags scams and risky trades before they cost you.</p>
+    </div>
+    <div class="layout">
+      <div>
+        <div id="chat"></div>
+        <details class="card hold" id="hold">
+          <summary>Add your holdings for personalised checks (optional)</summary>
+          <p class="small muted">One per line: <code>SYMBOL amount</code>, e.g. <code>AAPL 5000</code>. Add <code>cash 2000</code> for cash. Stays in your browser tab; it is sent only with your questions so SnowBull can check concentration and risk.</p>
+          <label class="sr" for="holdings">Holdings</label>
+          <textarea id="holdings" class="input" rows="4" placeholder="AAPL 5000&#10;VTI 8000&#10;cash 2000"></textarea>
+          <p class="small muted" id="hold-msg" role="status"></p>
+        </details>
+      </div>
+      <aside aria-label="What SnowBull does" class="pillars" id="how">
+        <div class="card pillar"><h3><span class="ic" aria-hidden="true">📚</span>Sourced answers</h3><p>Every answer is retrieved from a curated library (SEC, FINRA, IRS, FTC guidance) and cited, so you can verify it. If it has no reliable source, it says so.</p></div>
+        <div class="card pillar"><h3><span class="ic" aria-hidden="true">⚡</span>Current, not stale</h3><p>Live quotes and headlines are retrieved at question time and ranked by relevance and freshness, so answers reflect today, not a training cut-off.</p></div>
+        <div class="card pillar"><h3><span class="ic" aria-hidden="true">🧭</span>Practical guidance</h3><p>Asset-mix starting points, tradeoffs and next steps matched to your horizon and risk comfort, with your holdings if you share them.</p></div>
+        <div class="card pillar"><h3><span class="ic" aria-hidden="true">🛡️</span>Scam &amp; risk alerts</h3><p>A rules-based detector scans every message for fraud patterns (guaranteed returns, pump-and-dump, phishing) and trading risks (leverage, concentration, unusual moves).</p></div>
+        <div class="card" id="privacy"><h3>Privacy &amp; limits</h3><p class="small muted">Do not enter passwords, one-time codes, card numbers or seed phrases. Conversations are not stored on a server by this app. SnowBull is not a licensed adviser and cannot guarantee that information is complete or current.</p></div>
+      </aside>
+    </div>
+  </main>
+  <footer class="site-footer"><div class="container"><p class="small">© SnowBull · Part of the SnowBall+ family. Market data may be delayed. Sources: SEC Investor.gov, FINRA, IRS, FTC, SIPC.</p></div></footer>
+
+  <script src="config.js?v=1.0.0"></script>
+  <script src="core/knowledge.js?v=1.0.0"></script>
+  <script src="core/snowbull-core.js?v=1.0.0"></script>
+  <script src="snowbull-ui.js?v=1.0.0"></script>
+  <script src="app.js?v=1.0.0"></script>
+</body>
+</html>

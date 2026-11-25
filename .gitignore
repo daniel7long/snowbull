@@ -1,0 +1,11 @@
+node_modules/
+.DS_Store
+*.log
+.env
+.env.*
+!.env.example
+.vercel/
+.claude/
+*.zip
+backend/.aws-sam/
+snowbull/node_modules/

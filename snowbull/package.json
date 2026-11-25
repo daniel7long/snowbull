@@ -1,0 +1,13 @@
+{
+  "name": "snowbull",
+  "version": "1.0.0",
+  "private": true,
+  "description": "SnowBull — RAG fintech agent for SnowBall+ (embedded) and standalone on Vercel",
+  "license": "MIT",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "dev": "node scripts/dev-server.js",
+    "test": "node test/core.test.js && node test/api.test.js",
+    "sync": "node scripts/sync-to-snowball.js"
+  }
+}
