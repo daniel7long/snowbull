@@ -36,7 +36,7 @@
       '<div class="sbl-foot"><div class="sbl-chips" id="' + uid + '-chips" role="group" aria-label="Suggested questions"></div>' +
       '<form class="sbl-form" id="' + uid + '-f" autocomplete="off"><label class="sbl-sr" for="' + uid + '-in">Ask SnowBull</label>' +
       '<textarea id="' + uid + '-in" rows="1" maxlength="1500" placeholder="Ask about a stock, your portfolio, or paste a suspicious offer…"></textarea><button type="submit" class="sbl-send" id="' + uid + '-go">Ask</button></form>' +
-      '<div class="sbl-meta"><button type="button" class="sbl-clear" data-sbl="clear">Clear conversation</button><span>Never share passwords, codes or card numbers here.</span></div>' +
+      '<div class="sbl-meta"><button type="button" class="sbl-clear" data-sbl="clear">Clear conversation</button><span>Never share passwords or codes.</span></div>' +
       '<p class="sbl-disc">SnowBull gives educational information, not personalised investment advice. Investing involves risk, including loss of principal.</p></div></section>';
     const $ = function (s) { return root.querySelector('#' + uid + '-' + s); };
     const log = $('log'), input = $('in'), go = $('go'), chips = $('chips'), st = $('st');
