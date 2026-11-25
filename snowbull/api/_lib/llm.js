@@ -4,8 +4,32 @@
 const E = process.env;
 const nums = (s) => (String(s).match(/\d[\d,]*\.?\d*/g) || []).map((x) => x.replace(/,/g, '').replace(/\.$/, ''));
 
+const provider = () => (E.OPENAI_API_KEY ? 'openai' : E.ANTHROPIC_API_KEY ? 'anthropic' : null);
+const enabled = () => !!provider();
+
+async function call(prompt, clean, signal) {
+  if (provider() === 'openai') {
+    const r = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST', signal,
+      headers: { 'content-type': 'application/json', authorization: 'Bearer ' + E.OPENAI_API_KEY },
+      body: JSON.stringify({ model: E.OPENAI_MODEL || 'gpt-4o-mini', temperature: 0.2, max_tokens: 700, messages: [{ role: 'system', content: prompt.system }].concat(clean) })
+    });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const j = await r.json();
+    return String(j.choices && j.choices[0] && j.choices[0].message && j.choices[0].message.content || '').trim();
+  }
+  const r = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST', signal,
+    headers: { 'content-type': 'application/json', 'x-api-key': E.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
+    body: JSON.stringify({ model: E.SNOWBULL_MODEL || 'claude-sonnet-5-5', max_tokens: 700, system: prompt.system, messages: clean })
+  });
+  if (!r.ok) throw new Error('HTTP ' + r.status);
+  const j = await r.json();
+  return (j.content || []).filter((b) => b.type === 'text').map((b) => b.text).join('\n').trim();
+}
+
 async function rewrite(prompt, history) {
-  if (!E.ANTHROPIC_API_KEY) return null;
+  if (!enabled()) return null;
   const msgs = (history || []).slice(-6).filter((h) => h && (h.role === 'user' || h.role === 'assistant') && h.content).map((h) => ({ role: h.role, content: String(h.content).slice(0, 1200) }));
   while (msgs.length && msgs[0].role !== 'user') msgs.shift();
   const clean = [];
@@ -14,14 +38,7 @@ async function rewrite(prompt, history) {
   clean.push({ role: 'user', content: prompt.user });
   const c = new AbortController(), t = setTimeout(() => c.abort(), 20000);
   try {
-    const r = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST', signal: c.signal,
-      headers: { 'content-type': 'application/json', 'x-api-key': E.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
-      body: JSON.stringify({ model: E.SNOWBULL_MODEL || 'claude-sonnet-5-5', max_tokens: 700, system: prompt.system, messages: clean })
-    });
-    if (!r.ok) throw new Error('HTTP ' + r.status);
-    const j = await r.json();
-    const text = (j.content || []).filter((b) => b.type === 'text').map((b) => b.text).join('\n').trim();
+    const text = await call(prompt, clean, c.signal);
     if (!text) return null;
     const allowed = new Set(nums(prompt.user));
     const bad = nums(text).filter((n) => !allowed.has(n) && n.length > 1);
@@ -29,4 +46,4 @@ async function rewrite(prompt, history) {
     return text;
   } catch (e) { return null; } finally { clearTimeout(t); }
 }
-module.exports = { rewrite };
+module.exports = { rewrite, enabled, provider };

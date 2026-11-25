@@ -54,7 +54,7 @@ module.exports = async function handler(req, res) {
     input.live = { quotes: q, news: n.concat(input.context.news) };
     const out = core.answer(input);
     let mode = 'local';
-    if (process.env.ANTHROPIC_API_KEY) {
+    if (llm.enabled()) {
       const text = await llm.rewrite(core.buildPrompt(out, input), input.history);
       if (text) { out.answer = text; mode = 'rag+llm'; }
     }

@@ -25,7 +25,7 @@ browser (SnowBull UI) ──POST /api/chat──▶ Vercel function
 * `public/core/` — engine shared by server and browser (no dependencies, no network).
 * `api/chat.js`, `api/health.js`, `api/_lib/` — Vercel functions.
 * `public/` — standalone site (`index.html`, `app.js`, `base.css`, `snowbull.css`, `snowbull-ui.js`).
-* The LLM step (`ANTHROPIC_API_KEY`) is optional. The model only *rewrites* the grounded draft; any answer that introduces numbers missing from the sources is discarded in favour of the draft.
+* The LLM step (`OPENAI_API_KEY` or `ANTHROPIC_API_KEY`) is optional. The model only *rewrites* the grounded draft; any answer that introduces numbers missing from the sources is discarded in favour of the draft.
 
 ## Run locally
 
@@ -38,7 +38,7 @@ npm run dev         # http://localhost:3000  (static site + /api, like `vercel d
 ## Deploy on Vercel
 
 1. Import the repo in Vercel and set **Root Directory** to `snowbull`. No build command; output is `public` (already in `vercel.json`).
-2. Environment variables (all optional, see `.env.example`): `ANTHROPIC_API_KEY`, `SNOWBULL_MODEL`, `FINNHUB_KEY`, `SNOWBULL_ALLOW_ORIGIN`.
+2. Environment variables (all optional, see `.env.example`): `OPENAI_API_KEY` / `OPENAI_MODEL` (or `ANTHROPIC_API_KEY` / `SNOWBULL_MODEL`), `FINNHUB_KEY`, `SNOWBULL_ALLOW_ORIGIN`.
 3. Set `SNOWBULL_ALLOW_ORIGIN` to your SnowBall+ origin (e.g. `https://d123.cloudfront.net`) so only your site can call the API from a browser.
 4. Optional: set `snowballUrl` in `public/config.js` to show an "Open SnowBall+" button.
 
